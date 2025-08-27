@@ -1,0 +1,5 @@
+{
+  "name": "AI Virtual Try-On",
+  "description": "Upload a photo of yourself and a piece of clothing, and let AI generate an image of you wearing it. A virtual dressing room powered by Gemini.",
+  "requestFramePermissions": []
+}
