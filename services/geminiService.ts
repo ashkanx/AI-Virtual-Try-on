@@ -2,6 +2,14 @@
 
 import { GoogleGenAI, Modality } from "@google/genai";
 
+// Debug logging for API key
+console.log("Environment check:", {
+    hasApiKey: !!process.env.API_KEY,
+    hasGeminiApiKey: !!process.env.GEMINI_API_KEY,
+    apiKeyLength: process.env.API_KEY?.length || 0,
+    apiKeyPrefix: process.env.API_KEY?.substring(0, 10) || 'none'
+});
+
 if (!process.env.API_KEY) {
     throw new Error("API_KEY environment variable is not set");
 }
