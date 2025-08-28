@@ -6,8 +6,8 @@ export default defineConfig(({ mode }) => {
     return {
       base: process.env.NODE_ENV === 'production' ? '/AI-Virtual-Try-on/' : '/',
       define: {
-        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
-        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+        'process.env.API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.VITE_GEMINI_API_KEY || env.GEMINI_API_KEY)
       },
       resolve: {
         alias: {
