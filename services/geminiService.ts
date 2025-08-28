@@ -47,7 +47,7 @@ export const virtualTryOn = async (personFile: File, clothingFile: File): Promis
         };
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.5-flash-image-preview',
+            model: 'gemini-2.0-flash-exp',
             contents: {
                 parts: [
                     personPart,
@@ -71,6 +71,12 @@ export const virtualTryOn = async (personFile: File, clothingFile: File): Promis
 
     } catch (error) {
         console.error("Error in virtualTryOn service:", error);
+        
+        // Log the full error details for debugging
+        if (error && typeof error === 'object') {
+            console.error("Full error object:", JSON.stringify(error, null, 2));
+        }
+        
         if (error instanceof Error) {
            throw new Error(`Failed to generate image: ${error.message}`);
         }
