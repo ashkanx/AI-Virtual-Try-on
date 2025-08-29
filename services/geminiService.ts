@@ -2,20 +2,6 @@
 
 import { GoogleGenAI, Modality } from "@google/genai";
 
-// Debug logging for API key
-console.log("Environment check:", {
-    hasApiKey: !!process.env.API_KEY,
-    hasGeminiApiKey: !!process.env.GEMINI_API_KEY,
-    apiKeyLength: process.env.API_KEY?.length || 0,
-    apiKeyPrefix: process.env.API_KEY?.substring(0, 10) || 'none'
-});
-
-if (!process.env.API_KEY) {
-    throw new Error("API_KEY environment variable is not set");
-}
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
 const fileToGenerativePart = async (file: File) => {
   const base64EncodedDataPromise = new Promise<string>((resolve) => {
     const reader = new FileReader();
@@ -38,6 +24,7 @@ const fileToGenerativePart = async (file: File) => {
 };
 
 export const virtualTryOn = async (personFile: File, clothingFile: File): Promise<string> => {
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     try {
         const personPart = await fileToGenerativePart(personFile);
         const clothingPart = await fileToGenerativePart(clothingFile);
@@ -47,7 +34,7 @@ export const virtualTryOn = async (personFile: File, clothingFile: File): Promis
         };
 
         const response = await ai.models.generateContent({
-            model: 'gemini-2.0-flash-exp',
+            model: 'gemini-2.5-flash-image-preview',
             contents: {
                 parts: [
                     personPart,
@@ -71,12 +58,6 @@ export const virtualTryOn = async (personFile: File, clothingFile: File): Promis
 
     } catch (error) {
         console.error("Error in virtualTryOn service:", error);
-        
-        // Log the full error details for debugging
-        if (error && typeof error === 'object') {
-            console.error("Full error object:", JSON.stringify(error, null, 2));
-        }
-        
         if (error instanceof Error) {
            throw new Error(`Failed to generate image: ${error.message}`);
         }
